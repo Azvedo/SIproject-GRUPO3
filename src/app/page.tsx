@@ -8,6 +8,7 @@ import { aStarSearch } from '@/lib/algorithms/astart';
 // Importe os outros algoritmos aqui (bfs, dfs, etc.)
 import Grid from './components/Grid';
 import Controls from './components/Controls';
+import { dfsSearch } from '@/lib/algorithms/dfs';
 
 const MAP_WIDTH = 40;
 const MAP_HEIGHT = 25;
@@ -59,8 +60,7 @@ export default function Home() {
     let searchFunction;
     switch (algorithm) {
       case 'A*': searchFunction = aStarSearch; break;
-      // Adicione os outros casos aqui
-      // case 'BFS': searchFunction = bfsSearch; break;
+      case 'DFS': searchFunction = dfsSearch; break;
       default: searchFunction = aStarSearch;
     }
     
