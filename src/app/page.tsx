@@ -5,6 +5,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Grid as GridType, Position, SearchAlgorithm, SearchHistoryFrame } from '@/lib/types';
 import { generateRandomMap, getRandomValidPosition } from '@/lib/mapGenerator';
 import { aStarSearch } from '@/lib/algorithms/astart';
+import { greedySearch } from '@/lib/algorithms/greedy';
 // Importe os outros algoritmos aqui (bfs, dfs, etc.)
 import Grid from './components/Grid';
 import Controls from './components/Controls';
@@ -60,6 +61,7 @@ export default function Home() {
     let searchFunction;
     switch (algorithm) {
       case 'A*': searchFunction = aStarSearch; break;
+      case 'Greedy': searchFunction = greedySearch; break;
       case 'DFS': searchFunction = dfsSearch; break;
       default: searchFunction = aStarSearch;
     }
