@@ -5,6 +5,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Grid as GridType, Position, SearchAlgorithm, SearchHistoryFrame } from '@/lib/types';
 import { generateRandomMap, getRandomValidPosition } from '@/lib/mapGenerator';
 import { aStarSearch } from '@/lib/algorithms/astart';
+import { bfsSearch } from '@/lib/algorithms/bfs';
 // Importe os outros algoritmos aqui (bfs, dfs, etc.)
 import Grid from './components/Grid';
 import Controls from './components/Controls';
@@ -61,6 +62,8 @@ export default function Home() {
       case 'A*': searchFunction = aStarSearch; break;
       // Adicione os outros casos aqui
       // case 'BFS': searchFunction = bfsSearch; break;
+      case 'BFS': searchFunction = bfsSearch; break;
+      // case 'DFS': searchFunction = dfsSearch; break;
       default: searchFunction = aStarSearch;
     }
     
