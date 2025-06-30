@@ -8,7 +8,7 @@ export function aStarSearch(
   grid: Grid,
   startPos: Position,
   endPos: Position
-): { path: Position[]; history: SearchHistoryFrame[] } {
+): { path: Position[]; history: SearchHistoryFrame[]; cost?: number } {
   // Inicialização
   const startNode = grid[startPos.y][startPos.x];
   const endNode = grid[endPos.y][endPos.x];
@@ -49,7 +49,7 @@ export function aStarSearch(
 
     // Objetivo alcançado
     if (currentNode === endNode) {
-      return { path: reconstructPath(endNode), history };
+      return { path: reconstructPath(endNode), history, cost: endNode.gCost };
     }
 
     // Explora os vizinhos
@@ -74,5 +74,5 @@ export function aStarSearch(
   }
 
   // Caminho não encontrado
-  return { path: [], history };
+  return { path: [], history, cost: -1 };
 }

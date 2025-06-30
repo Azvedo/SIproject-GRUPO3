@@ -25,7 +25,7 @@ export default function Controls({
   return (
     <div className="my-4 p-4 bg-gray-800 rounded-lg flex items-center justify-between gap-4">
       <div className="flex items-center gap-4">
-        <label htmlFor="algorithm-select" className="font-bold">Algoritmo:</label>
+        <label htmlFor="algorithm-select" className="font-bold text-white">Algoritmo:</label>
         <select
           id="algorithm-select"
           value={selectedAlgorithm}
@@ -58,7 +58,7 @@ export default function Controls({
         </button>
       </div>
       
-      <div className="text-xl font-bold">
+      <div className="text-xl text-white font-bold">
         Comidas Coletadas: <span className="text-yellow-400">{score}</span>
       </div>
     </div>

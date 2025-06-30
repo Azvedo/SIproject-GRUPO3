@@ -1,58 +1,32 @@
+/* app/globals.css */
+
+/* Use esta importação única, pois ela funcionou melhor no seu setup */
 @import "tailwindcss";
-/* 2. DEFINIÇÃO DAS VARIÁVEIS GLOBAIS (TEMA CLARO - DEFAULT)
-  Usamos o seletor :root para definir variáveis CSS que estarão disponíveis
-  em todo o documento. Este bloco define as cores para o tema claro como padrão.
-*/
+
 :root {
-  /* Suas variáveis de tema para o modo claro */
-  --background: #ffffff; /* Fundo branco */
-  --foreground: #171717; /* Texto preto */
+  /* Tema Geral */
+  --background: #ffffff;
+  --foreground: #171717;
 
-  /* Nossas variáveis de cores para os elementos do JOGO */
-  /* Essas cores foram escolhidas para funcionar bem em ambos os temas. */
-  --color-sand: #f0e68c;       /* Areia (custo baixo) */
-  --color-mud: #8b4513;        /* Atoleiro (custo médio) */
-  --color-water: #1e90ff;      /* Água (custo alto) */
-  --color-obstacle: #333333;   /* Obstáculo */
-  
-  /* Cores para a visualização da busca */
-  --color-frontier: rgba(255, 165, 0, 0.6); /* Laranja para a fronteira */
-  --color-visited: rgba(0, 0, 255, 0.4);    /* Azul para os visitados */
-  --color-path: #ffdd00;                     /* Amarelo forte para o caminho final */
-
-  /* Cores para o Agente e a Comida */
-  --color-agent: #ff4500;      /* Laranja avermelhado para o agente */
-  --color-food: #32cd32;       /* Verde para a comida */
+  /* Cores do Jogo */
+  --color-sand: #f0e68c;
+  --color-mud: #8b4513;
+  --color-water: #1e90ff;
+  --color-obstacle: #333333;
+  --color-visited: rgba(0, 0, 255, 0.4);
+  --color-frontier: rgba(255, 165, 0, 0.6);
+  --color-path: #ffdd00;
+  --color-agent: #ff4500;
 }
 
-/* 3. SOBRESCREVER VARIÁVEIS PARA O TEMA ESCURO
-  Usando a media query `prefers-color-scheme: dark`, detectamos se o usuário
-  prefere o modo escuro. Se sim, as variáveis dentro deste bloco irão 
-  sobrescrever as padrões definidas no :root.
-*/
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Suas variáveis de tema para o modo escuro */
-    --background: #0a0a0a; /* Fundo preto */
-    --foreground: #ededed; /* Texto branco */
-
-    /* Opcional: Você poderia ajustar as cores do jogo para o modo escuro aqui também,
-      mas as cores atuais já têm um bom contraste. Por exemplo, você poderia 
-      deixar a cor do obstáculo um pouco mais clara no modo escuro.
-    */
-    --color-obstacle: #444444; 
-  }
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --color-obstacle: #444444;
 }
 
-/* 4. APLICANDO AS VARIÁVEIS AO CORPO DA PÁGINA
-  Agora, usamos as variáveis que definimos para estilizar o corpo do documento.
-  O navegador irá automaticamente usar o valor correto de --background e --foreground
-  dependendo do tema (claro ou escuro) do usuário.
-*/
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  /* A fonte pode ser definida aqui, como você fez, ou através das 
-     configurações do Tailwind para uma melhor integração com o framework. */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
