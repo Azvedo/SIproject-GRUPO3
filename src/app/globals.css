@@ -9,13 +9,13 @@
   --foreground: #171717;
 
   /* Cores do Jogo */
+  --color-path: #ffdd00;
   --color-sand: #f0e68c;
   --color-mud: #8b4513;
   --color-water: #1e90ff;
   --color-obstacle: #333333;
-  --color-visited: rgba(0, 0, 255, 0.4);
-  --color-frontier: rgba(255, 165, 0, 0.6);
-  --color-path: #ffdd00;
+  --color-visited: rgba(0, 0, 255, 0.6);
+  --color-frontier: rgba(255, 0, 170, 0.8);
   --color-agent: #ff4500;
 }
 

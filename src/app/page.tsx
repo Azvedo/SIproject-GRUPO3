@@ -11,7 +11,7 @@ import Controls from './components/Controls';
 
 const MAP_WIDTH = 40;
 const MAP_HEIGHT = 25;
-const ANIMATION_SPEED_MS = 20; // Velocidade da animação da busca
+const ANIMATION_SPEED_MS = 10; // Velocidade da animação da busca
 
 export default function Home() {
   // Estados do Jogo
@@ -39,8 +39,6 @@ export default function Home() {
     setHistory([]);
     setPath([]);
     setCurrentFrame(0);
-    // Opcional: resetar o placar a cada novo mapa
-    setScore(0);
   }, []);
 
   // Efeito para criar o mapa inicial
@@ -52,7 +50,7 @@ export default function Home() {
   const handleStartSearch = () => {
     if (isAnimating) return;
     
-    // Limpa a visualização anterior para a nova busca
+    // Limpa a visualização anterior
     setHistory([]);
     setPath([]);
     setCurrentFrame(0);
@@ -77,6 +75,7 @@ export default function Home() {
     if (!isAnimatingSearch || currentFrame >= history.length) {
       if(isAnimatingSearch) {
         setIsAnimatingSearch(false);
+        // Quando a animação da busca termina, inicia a animação do caminho
         if(path.length > 0) setIsAnimatingPath(true);
       }
       return;
@@ -98,27 +97,20 @@ export default function Home() {
 
     const moveAgent = (pathIndex: number) => {
         if (pathIndex >= path.length) {
-            // ================== MUDANÇAS APLICADAS AQUI ==================
-            // O agente chegou ao seu destino (a comida).
-
-            // 1. O placar é incrementado. (Isso permanece)
+            // Chegou ao fim
             setScore(prev => prev + 1);
-
-            // 2. O caminho e a posição da comida NÃO são mais resetados.
-            //    Eles permanecerão na tela. As linhas abaixo foram removidas:
-            //    const newFoodPos = getRandomValidPosition(grid); // REMOVIDO
-            //    setFoodPos(newFoodPos); // REMOVIDO
-            //    setPath([]); // REMOVIDO
-
-            // 3. A animação do caminho simplesmente para.
+            const newFoodPos = getRandomValidPosition(grid);
+            setFoodPos(newFoodPos);
+            // setPath([]); // Limpa o caminho para a próxima busca
             setIsAnimatingPath(false);
             return;
-            // ==============================================================
         }
 
         const nextPos = path[pathIndex];
         const currentTerrainCost = grid[nextPos.y][nextPos.x].cost;
         
+        // A velocidade do agente é inversamente proporcional ao custo do terreno
+        // Custo alto -> delay maior -> movimento mais lento
         const delay = 50 * currentTerrainCost;
 
         setAgentPos(nextPos);
@@ -136,9 +128,7 @@ export default function Home() {
     return {
         visitedNodes: new Set(frame?.visited.map(p => `${p.y}-${p.x}`)),
         frontierNodes: new Set(frame?.frontier.map(p => `${p.y}-${p.x}`)),
-        // A lógica para mostrar o caminho final foi ajustada para que ele
-        // permaneça visível mesmo após o fim da animação.
-        pathNodes: new Set((isAnimatingPath || (!isAnimatingSearch && path.length > 0)) ? path.map(p => `${p.y}-${p.x}`) : [])
+        pathNodes: new Set(isAnimatingPath || !isAnimatingSearch ? path.map(p => `${p.y}-${p.x}`) : [])
     };
   }, [currentFrame, history, path, isAnimatingPath, isAnimatingSearch]);
 
