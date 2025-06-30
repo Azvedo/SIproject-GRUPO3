@@ -16,7 +16,7 @@
   --color-obstacle: #333333;
   --color-visited: rgba(0, 0, 255, 0.6);
   --color-frontier: rgba(255, 0, 170, 0.8);
-  --color-agent: #ff4500;
+  --color-agent: #ff1c14;
 }
 
 .dark {
