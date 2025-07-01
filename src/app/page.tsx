@@ -2,14 +2,21 @@
 'use client';
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Grid as GridType, Position, SearchAlgorithm, SearchHistoryFrame } from '@/lib/types';
+import {
+  Grid as GridType,
+  Position,
+  SearchAlgorithm,
+  SearchHistoryFrame
+} from '@/lib/types';
 import { generateRandomMap, getRandomValidPosition } from '@/lib/mapGenerator';
 import { aStarSearch } from '@/lib/algorithms/astart';
+import { bfsSearch } from '@/lib/algorithms/bfs';
 import { greedySearch } from '@/lib/algorithms/greedy';
 // Importe os outros algoritmos aqui (bfs, dfs, etc.)
 import Grid from './components/Grid';
 import Controls from './components/Controls';
 import { dfsSearch } from '@/lib/algorithms/dfs';
+import { ucsSearch } from '@/lib/algorithms/ucs';
 
 const MAP_WIDTH = 40;
 const MAP_HEIGHT = 25;
@@ -29,7 +36,7 @@ export default function Home() {
   const [currentFrame, setCurrentFrame] = useState(0);
   const [isAnimatingSearch, setIsAnimatingSearch] = useState(false);
   const [isAnimatingPath, setIsAnimatingPath] = useState(false);
-  
+
   const isAnimating = isAnimatingSearch || isAnimatingPath;
 
   // Função para inicializar/resetar o mapa
@@ -51,21 +58,32 @@ export default function Home() {
   // Função para iniciar a busca
   const handleStartSearch = () => {
     if (isAnimating) return;
-    
+
     // Limpa a visualização anterior
     setHistory([]);
     setPath([]);
     setCurrentFrame(0);
-    
+
     // Escolhe a função de busca correta
     let searchFunction;
     switch (algorithm) {
-      case 'A*': searchFunction = aStarSearch; break;
+      case 'A*':
+        searchFunction = aStarSearch;
+        break;
       case 'Greedy': searchFunction = greedySearch; break;
-      case 'DFS': searchFunction = dfsSearch; break;
-      default: searchFunction = aStarSearch;
+      case 'DFS':
+        searchFunction = dfsSearch;
+        break;
+      case 'UCS':
+        searchFunction = ucsSearch;
+        break;
+      case 'BFS': 
+        searchFunction = bfsSearch;
+        break;
+      default:
+        searchFunction = aStarSearch;
     }
-    
+
     const result = searchFunction(grid, agentPos, foodPos);
     setHistory(result.history);
     setPath(result.path);
@@ -75,10 +93,10 @@ export default function Home() {
   // Efeito para animar a busca (visitados/fronteira)
   useEffect(() => {
     if (!isAnimatingSearch || currentFrame >= history.length) {
-      if(isAnimatingSearch) {
+      if (isAnimatingSearch) {
         setIsAnimatingSearch(false);
         // Quando a animação da busca termina, inicia a animação do caminho
-        if(path.length > 0) setIsAnimatingPath(true);
+        if (path.length > 0) setIsAnimatingPath(true);
       }
       return;
     }
@@ -93,44 +111,47 @@ export default function Home() {
   // Efeito para animar o movimento do agente no caminho final
   useEffect(() => {
     if (!isAnimatingPath || path.length <= 1) {
-        setIsAnimatingPath(false);
-        return;
+      setIsAnimatingPath(false);
+      return;
     }
 
     const moveAgent = (pathIndex: number) => {
-        if (pathIndex >= path.length) {
-            // Chegou ao fim
-            setScore(prev => prev + 1);
-            const newFoodPos = getRandomValidPosition(grid);
-            setFoodPos(newFoodPos);
-            // setPath([]); // Limpa o caminho para a próxima busca
-            setIsAnimatingPath(false);
-            return;
-        }
+      if (pathIndex >= path.length) {
+        // Chegou ao fim
+        setScore((prev) => prev + 1);
+        const newFoodPos = getRandomValidPosition(grid);
+        setFoodPos(newFoodPos);
+        // setPath([]); // Limpa o caminho para a próxima busca
+        setIsAnimatingPath(false);
+        return;
+      }
 
-        const nextPos = path[pathIndex];
-        const currentTerrainCost = grid[nextPos.y][nextPos.x].cost;
-        
-        // A velocidade do agente é inversamente proporcional ao custo do terreno
-        // Custo alto -> delay maior -> movimento mais lento
-        const delay = 50 * currentTerrainCost;
+      const nextPos = path[pathIndex];
+      const currentTerrainCost = grid[nextPos.y][nextPos.x].cost;
 
-        setAgentPos(nextPos);
+      // A velocidade do agente é inversamente proporcional ao custo do terreno
+      // Custo alto -> delay maior -> movimento mais lento
+      const delay = 50 * currentTerrainCost;
 
-        setTimeout(() => moveAgent(pathIndex + 1), delay);
+      setAgentPos(nextPos);
+
+      setTimeout(() => moveAgent(pathIndex + 1), delay);
     };
 
     moveAgent(1); // Começa do segundo nó do caminho
-
   }, [isAnimatingPath, path, grid]);
-  
+
   // Memoiza os sets de nós para otimizar a renderização do Grid
   const { visitedNodes, frontierNodes, pathNodes } = useMemo(() => {
     const frame = history[currentFrame - 1];
     return {
-        visitedNodes: new Set(frame?.visited.map(p => `${p.y}-${p.x}`)),
-        frontierNodes: new Set(frame?.frontier.map(p => `${p.y}-${p.x}`)),
-        pathNodes: new Set(isAnimatingPath || !isAnimatingSearch ? path.map(p => `${p.y}-${p.x}`) : [])
+      visitedNodes: new Set(frame?.visited.map((p) => `${p.y}-${p.x}`)),
+      frontierNodes: new Set(frame?.frontier.map((p) => `${p.y}-${p.x}`)),
+      pathNodes: new Set(
+        isAnimatingPath || !isAnimatingSearch
+          ? path.map((p) => `${p.y}-${p.x}`)
+          : []
+      )
     };
   }, [currentFrame, history, path, isAnimatingPath, isAnimatingSearch]);
 
