@@ -35,8 +35,23 @@ export default function Home() {
   const [currentFrame, setCurrentFrame] = useState(0);
   const [isAnimatingSearch, setIsAnimatingSearch] = useState(false);
   const [isAnimatingPath, setIsAnimatingPath] = useState(false);
+  const [pathCost, setPathCost] = useState<number>(0);
+  const [searchTime, setSearchTime] = useState<number>(0);
+  const [searchStartTime, setSearchStartTime] = useState<number>(0);
 
   const isAnimating = isAnimatingSearch || isAnimatingPath;
+
+  // Função para calcular o custo total do caminho
+  const calculatePathCost = (path: Position[], grid: GridType): number => {
+    if (path.length <= 1) return 0;
+    
+    let totalCost = 0;
+    for (let i = 1; i < path.length; i++) {
+      const pos = path[i];
+      totalCost += grid[pos.y][pos.x].cost;
+    }
+    return totalCost;
+  };
 
   // Função para inicializar/resetar o mapa
   const handleNewMap = useCallback(() => {
@@ -47,6 +62,9 @@ export default function Home() {
     setHistory([]);
     setPath([]);
     setCurrentFrame(0);
+    setPathCost(0);
+    setSearchTime(0);
+    setSearchStartTime(0);
   }, []);
 
   // Efeito para criar o mapa inicial
@@ -62,6 +80,9 @@ export default function Home() {
     setHistory([]);
     setPath([]);
     setCurrentFrame(0);
+    setPathCost(0);
+    setSearchTime(0);
+    setSearchStartTime(Date.now()); // Marca o tempo de início
 
     // Escolhe a função de busca correta
     let searchFunction;
@@ -94,10 +115,30 @@ export default function Home() {
     if (!isAnimatingSearch || currentFrame >= history.length) {
       if (isAnimatingSearch) {
         setIsAnimatingSearch(false);
-        // Quando a animação da busca termina, inicia a animação do caminho
-        if (path.length > 0) setIsAnimatingPath(true);
+        // Calcula e exibe o custo final do caminho quando a busca termina
+        if (path.length > 0) {
+          const cost = calculatePathCost(path, grid);
+          setPathCost(cost);
+          setIsAnimatingPath(true);
+        }
+        // Calcula o tempo final de busca
+        const finalTime = Date.now() - searchStartTime;
+        setSearchTime(finalTime);
       }
       return;
+    }
+
+    // Atualiza o tempo de busca em tempo real
+    const currentTime = Date.now() - searchStartTime;
+    setSearchTime(currentTime);
+
+    // Atualiza o custo durante a animação baseado no progresso
+    if (path.length > 0) {
+      // Calcula um custo parcial baseado no progresso da animação
+      const progress = currentFrame / history.length;
+      const partialPath = path.slice(0, Math.ceil(path.length * progress));
+      const partialCost = calculatePathCost(partialPath, grid);
+      setPathCost(partialCost);
     }
 
     const timer = setTimeout(() => {
@@ -105,7 +146,7 @@ export default function Home() {
     }, ANIMATION_SPEED_MS);
 
     return () => clearTimeout(timer);
-  }, [isAnimatingSearch, currentFrame, history]);
+  }, [isAnimatingSearch, currentFrame, history, path, grid, searchStartTime]);
 
   // Efeito para animar o movimento do agente no caminho final
   useEffect(() => {
@@ -156,13 +197,15 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center p-8">
-      <h1 className="text-4xl font-bold mb-4">Agente Coletor de Comida - IA</h1>
+      <h1 className="text-4xl font-bold mb-4">Agente Coletor de Comida</h1>
       <Controls
         selectedAlgorithm={algorithm}
         onAlgorithmChange={setAlgorithm}
         onStartSearch={handleStartSearch}
         onNewMap={handleNewMap}
         isAnimating={isAnimating}
+        pathCost={pathCost}
+        searchTime={searchTime}
         score={score}
       />
       <Grid

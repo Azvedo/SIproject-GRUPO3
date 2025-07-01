@@ -8,6 +8,8 @@ interface ControlsProps {
   onStartSearch: () => void;
   onNewMap: () => void;
   isAnimating: boolean;
+  pathCost: number;
+  searchTime: number;
   score: number;
 }
 
@@ -17,6 +19,8 @@ export default function Controls({
   onStartSearch,
   onNewMap,
   isAnimating,
+  pathCost,
+  searchTime,
   score,
 }: ControlsProps) {
   const algorithms: SearchAlgorithm[] = ['A*', 'Greedy', 'UCS', 'BFS', 'DFS'];
@@ -57,8 +61,20 @@ export default function Controls({
         </button>
       </div>
       
-      <div className="text-xl text-white font-bold">
-        Comidas Coletadas: <span className="text-yellow-400">{score}</span>
+      <div className="flex flex-col items-end gap-1">
+        <div className="text-lg text-white font-bold">
+          Comidas Coletadas: <span className="text-yellow-400">{score}</span>
+        </div>
+        <div className="text-lg text-white font-bold">
+          Custo do Caminho: <span className="text-green-400">{pathCost > 0 ? pathCost : '-'}</span>
+        </div>
+        <div className="text-lg text-white font-bold">
+          Tempo de Busca: <span className="text-blue-400">
+            {searchTime > 0 ? (
+              Math.floor(searchTime / 1000) > 0 ? `${Math.floor(searchTime / 1000)}s` : '<1s'
+            ) : '-'}
+          </span>
+        </div>
       </div>
     </div>
   );
