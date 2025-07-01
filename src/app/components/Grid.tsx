@@ -1,4 +1,3 @@
-// app/components/Grid.tsx
 'use client';
 
 import { Grid as GridType, Node, Position, Terrain } from '@/lib/types';

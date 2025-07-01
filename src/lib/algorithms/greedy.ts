@@ -1,4 +1,3 @@
-// lib/algorithms/greedy.ts
 import { Grid, Node, Position, SearchHistoryFrame, Terrain } from '../types';
 import { manhattanDistance } from '../heuristics';
 import { PriorityQueue } from '../priorityQueue';

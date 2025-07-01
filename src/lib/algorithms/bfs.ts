@@ -1,4 +1,3 @@
-// lib/algorithms/bfs.ts
 import { Grid, Position, SearchHistoryFrame } from '../types';
 import { getNeighbors, reconstructPath } from '../utils';
 

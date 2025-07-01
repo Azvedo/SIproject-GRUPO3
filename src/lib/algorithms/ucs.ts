@@ -1,4 +1,3 @@
-// lib/algorithms/ucs.ts
 import { Grid, Position, SearchHistoryFrame } from '../types';
 import { PriorityQueue } from '../priorityQueue';
 import { getNeighbors, reconstructPath } from '../utils';

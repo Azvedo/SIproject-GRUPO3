@@ -1,4 +1,3 @@
-// lib/priorityQueue.ts
 import { Node } from './types';
 
 // A fila de prioridade é usada para sempre escolher o "melhor" nó da fronteira.

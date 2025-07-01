@@ -1,4 +1,3 @@
-// lib/heuristics.ts
 import { Node } from './types';
 
 /**

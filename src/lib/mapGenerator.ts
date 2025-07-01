@@ -1,5 +1,3 @@
-// lib/mapGenerator.ts
-
 import { Grid, Node, Position, Terrain } from './types';
 
 // Mapeia os tipos de terreno para seus custos correspondentes.

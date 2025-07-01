@@ -1,4 +1,3 @@
-// app/components/Controls.tsx
 'use client';
 
 import { SearchAlgorithm } from '@/lib/types';

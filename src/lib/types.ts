@@ -1,5 +1,3 @@
-// lib/types.ts
-
 // Enum para os tipos de terreno. Usar um enum torna o código mais legível
 // do que usar strings soltas como "sand" ou "water".
 export enum Terrain {
