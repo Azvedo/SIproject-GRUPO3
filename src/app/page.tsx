@@ -13,6 +13,7 @@ import { bfsSearch } from '@/lib/algorithms/bfs';
 import { greedySearch } from '@/lib/algorithms/greedy';
 import Grid from './components/Grid';
 import Controls from './components/Controls';
+import Legend from './components/Legend';
 import { dfsSearch } from '@/lib/algorithms/dfs';
 import { ucsSearch } from '@/lib/algorithms/ucs';
 
@@ -224,14 +225,17 @@ export default function Home() {
         onPause={handlePause}
         onRestart={handleRestart}
       />
-      <Grid
-        grid={grid}
-        agentPos={agentPos}
-        foodPos={foodPos}
-        visitedNodes={visitedNodes}
-        frontierNodes={frontierNodes}
-        pathNodes={pathNodes}
-      />
+      <div className="flex gap-6 items-start">
+        <Grid
+          grid={grid}
+          agentPos={agentPos}
+          foodPos={foodPos}
+          visitedNodes={visitedNodes}
+          frontierNodes={frontierNodes}
+          pathNodes={pathNodes}
+        />
+        <Legend />
+      </div>
     </main>
   );
 }
