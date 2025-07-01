@@ -70,9 +70,9 @@ export default function Controls({
         <button
           onClick={onRestart}
           disabled={!isAnimatingSearch}
-          className="px-4 py-2 bg-orange-600 hover:bg-orange-700 rounded disabled:bg-gray-500 disabled:cursor-not-allowed"
+          className="px-4 py-2 bg-red-600 hover:bg-red-700 rounded disabled:bg-gray-500 disabled:cursor-not-allowed"
         >
-          Reiniciar
+          Parar
         </button>
         <button
           onClick={onNewMap}

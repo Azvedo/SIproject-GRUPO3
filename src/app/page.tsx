@@ -214,15 +214,19 @@ export default function Home() {
     }
   };
 
-  // Função para reiniciar a busca atual
+  // Função para parar completamente a busca atual
   const handleRestart = () => {
     if (isAnimatingSearch) {
+      setIsAnimatingSearch(false);
+      setIsAnimatingPath(false);
       setCurrentFrame(0);
       setPathCost(0);
       setSearchTime(0);
-      setSearchStartTime(Date.now());
+      setSearchStartTime(0);
       setIsPaused(false);
       setPausedFrame(0);
+      setHistory([]);
+      setPath([]);
     }
   };
 
