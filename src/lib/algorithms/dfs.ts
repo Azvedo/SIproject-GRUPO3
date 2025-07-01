@@ -12,7 +12,6 @@ export function dfsSearch(
     const stack: Node[] = [];
     const visited = new Set<string>(); // "y-x"
 
-    // Reset node states
     grid.forEach(row => row.forEach(node => {
         node.gCost = Infinity;
         node.parent = null;

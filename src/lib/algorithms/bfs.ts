@@ -6,7 +6,6 @@ export function bfsSearch(
   startPos: Position,
   endPos: Position
 ): { path: Position[]; history: SearchHistoryFrame[]; cost?: number } {
-  // Inicialização
   const startNode = grid[startPos.y][startPos.x];
   const endNode = grid[endPos.y][endPos.x];
   const history: SearchHistoryFrame[] = [];
@@ -14,7 +13,6 @@ export function bfsSearch(
   const queue: typeof startNode[] = [];
   const visited = new Set<string>(); // "y-x"
 
-  // Reseta os custos e pais dos nós do grid
   grid.forEach(row => row.forEach(node => {
     node.gCost = Infinity;
     node.parent = null;
@@ -27,7 +25,6 @@ export function bfsSearch(
   while (queue.length > 0) {
     const currentNode = queue.shift()!;
 
-    // Grava o estado atual para a animação
     history.push({
       visited: Array.from(visited).map(s => ({
         y: parseInt(s.split('-')[0]),
@@ -52,6 +49,5 @@ export function bfsSearch(
     }
   }
 
-  // Caminho não encontrado
   return { path: [], history, cost: -1 };
 }
