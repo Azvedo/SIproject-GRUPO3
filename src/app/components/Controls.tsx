@@ -11,6 +11,10 @@ interface ControlsProps {
   pathCost: number;
   searchTime: number;
   score: number;
+  isAnimatingSearch: boolean;
+  isPaused: boolean;
+  onPause: () => void;
+  onRestart: () => void;
 }
 
 export default function Controls({
@@ -22,6 +26,10 @@ export default function Controls({
   pathCost,
   searchTime,
   score,
+  isAnimatingSearch,
+  isPaused,
+  onPause,
+  onRestart,
 }: ControlsProps) {
   const algorithms: SearchAlgorithm[] = ['A*', 'Greedy', 'UCS', 'BFS', 'DFS'];
 
@@ -51,6 +59,20 @@ export default function Controls({
           className="px-4 py-2 bg-green-600 hover:bg-green-700 rounded disabled:bg-gray-500 disabled:cursor-not-allowed"
         >
           Iniciar Busca
+        </button>
+        <button
+          onClick={onPause}
+          disabled={!isAnimatingSearch}
+          className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 rounded disabled:bg-gray-500 disabled:cursor-not-allowed"
+        >
+          {isPaused ? 'Continuar' : 'Pausar'}
+        </button>
+        <button
+          onClick={onRestart}
+          disabled={!isAnimatingSearch}
+          className="px-4 py-2 bg-orange-600 hover:bg-orange-700 rounded disabled:bg-gray-500 disabled:cursor-not-allowed"
+        >
+          Reiniciar
         </button>
         <button
           onClick={onNewMap}
