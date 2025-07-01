@@ -10,6 +10,7 @@ import {
 } from '@/lib/types';
 import { generateRandomMap, getRandomValidPosition } from '@/lib/mapGenerator';
 import { aStarSearch } from '@/lib/algorithms/astart';
+import { bfsSearch } from '@/lib/algorithms/bfs';
 // Importe os outros algoritmos aqui (bfs, dfs, etc.)
 import Grid from './components/Grid';
 import Controls from './components/Controls';
@@ -73,6 +74,9 @@ export default function Home() {
         break;
       case 'UCS':
         searchFunction = ucsSearch;
+        break;
+      case 'BFS': 
+        searchFunction = bfsSearch;
         break;
       default:
         searchFunction = aStarSearch;
